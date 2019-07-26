@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::group(["prefix"=>"v1"],function(){
+    Route::get("questions","QuestionsController@index");
+    Route::post("user/response","UserResponseController@store");
+    Route::get("user/response","UserResponseController@index"); //Get all responses !
 });
