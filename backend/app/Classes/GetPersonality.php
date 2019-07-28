@@ -1,7 +1,10 @@
 <?php
+
+namespace App\Classes;
+
 use App\Questions;
 
-class PersonalityCalculator {
+class GetPersonality {
     
     private $ei,$sn ,$tf,$jp,$responses;
 

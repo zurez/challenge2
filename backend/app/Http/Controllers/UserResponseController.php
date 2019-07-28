@@ -35,6 +35,8 @@ class UserResponseController extends Controller
                 $gp = new GetPersonality($response);
 
                 $personalityType = $gp->personality();
+
+                $ret['personalityType'] = $personalityType;
               
             }
           
@@ -76,7 +78,4 @@ class UserResponseController extends Controller
     }
     
 
-    private function get_personality_type ($responses) {
-        
-    }
 }
