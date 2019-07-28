@@ -15,18 +15,18 @@ class UserResponseController extends Controller
     public function store(Request $r)
     {
         $ret = ['status' => 'success'];
-     
+        //return Input::all();
         try{
             // Create User Record 
             $user = User::firstOrCreate(['email' => $r->input('email')]);
             $user_id = $user->id;
-            $responses = json_decode(trim($r->input('responses')));
+            $responses = $r->input('responses');
             if(json_last_error() === 0){
                 foreach($responses as $response){
                    $ur = new UserResponse;
-                   $ur->question_id = $response->question_id;
+                   $ur->question_id = $response['question_id'];
                    $ur->user_id = $user_id;
-                   $ur->response = $response->response;
+                   $ur->response = $response['value'];
                    $ur->save();
                     
                 }
