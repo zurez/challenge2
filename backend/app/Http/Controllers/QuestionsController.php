@@ -15,9 +15,6 @@ class QuestionsController extends Controller
             $questions = Questions::select([
                 'id',
                 'title',
-                'dimension',
-                'direction',
-                'meaning'
             ])->get(); // 10 only.
             $response["questions"] = $questions;
         }

@@ -7,6 +7,7 @@ use App\UserResponse;
 use App\User;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
+use App\Classes\GetPersonality;
 
 class UserResponseController extends Controller
 {
@@ -30,7 +31,10 @@ class UserResponseController extends Controller
                    $ur->save();
                     
                 }
-              
+                
+                $gp = new GetPersonality($response);
+
+                $personalityType = $gp->personality();
               
             }
           
@@ -71,4 +75,8 @@ class UserResponseController extends Controller
         ->get();
     }
     
+
+    private function get_personality_type ($responses) {
+        
+    }
 }
