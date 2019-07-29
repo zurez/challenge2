@@ -3,19 +3,32 @@
 namespace App\Classes;
 
 use App\Questions;
+use Log;
 
 class GetPersonality {
     
-    private $ei,$sn ,$tf,$jp,$responses;
+    public $responses;
+    public  $e  = 0;
+    public  $i  = 0;
+    public  $s  = 0;
+    public  $n  = 0;
+    public  $t  = 0;
+    public  $f  = 0;
+    public  $j  = 0;
+    public  $p  = 0;
 
     public function __construct($responses)
     {
        $this->responses = $responses;
 
-       $this->ei = 0;
-       $this->sn = 0;
-       $this->tf = 0;
-       $this->jp = 0;
+       $this->e = 0;
+       $this->i = 0;
+       $this->s = 0;
+       $this->n = 0;
+       $this->t = 0;
+       $this->f = 0;
+       $this->j = 0;
+       $this->p = 0;
 
     }
     
@@ -48,11 +61,11 @@ class GetPersonality {
     }
     private function calculate(){
         $questions = $this->get_questions();
-        $processed = $this->merge_question_response($questions,$this->responses);
+        $processed = (Object)$this->merge_question_response($questions,$this->responses);
 
         foreach( $processed as $key => $value){
-            
-            switch($value->dimension){
+          
+            switch($value['dimension']){
                 case 'EI':
                     $this->handle_ei($value);
                     break;
@@ -60,7 +73,7 @@ class GetPersonality {
                     $this->handle_sn($value);
                     break;
                 case 'TF':
-                $this->handle_tf($value);
+                    $this->handle_tf($value);
                     break;
                 case 'JP':
                     $this->handle_jp($value);
@@ -72,66 +85,73 @@ class GetPersonality {
         }
     }
     private function handle_ei($response){
-        if($response->direction < 0){
-            if($response->value > 4){
-                $this->ei -= 1;
+        
+        if( $response['value'] >4){
+            if($response['direction'] < 0){
+                $this->e++;
             }else{
-                $this->ei +=1;
+                $this->i++;
             }
-        }else{
-            if($response->value > 4){
-                $this->ei += 1;
+        }
+        else if ($response['value'] < 4 ){
+            if($response['direction'] <0){
+                $this->i++;
             }else{
-                $this->ei -=1;
+                $this->e++;
             }
         }
     }
 
-
     private function handle_sn($response){
-        if($response->direction < 0){
-            if($response->value > 4){
-                $this->sn -= 1;
+        
+        if( $response['value'] >4){
+            if($response['direction'] < 0){
+                $this->s++;
             }else{
-                $this->sn +=1;
+                $this->n++;
             }
-        }else{
-            if($response->value > 4){
-                $this->sn += 1;
+        }
+        else if ($response['value'] < 4 ){
+            if($response['direction'] <0){
+                $this->n++;
             }else{
-                $this->sn -=1;
+                $this->s++;
             }
         }
     }
 
     private function handle_tf($response){
-        if($response->direction < 0){
-            if($response->value > 4){
-                $this->tf -= 1;
+        
+        if( $response['value'] >4){
+            if($response['direction'] < 0){
+                $this->t++;
             }else{
-                $this->tf +=1;
+                $this->f++;
             }
-        }else{
-            if($response->value > 4){
-                $this->tf += 1;
+        }
+        else if ($response['value'] < 4 ){
+            if($response['direction'] <0){
+                $this->f++;
             }else{
-                $this->tf -=1;
+                $this->t++;
             }
         }
     }
 
     private function handle_jp($response){
-        if($response->direction < 0){
-            if($response->value > 4){
-                $this->jp -= 1;
+        
+        if( $response['value'] >4){
+            if($response['direction'] < 0){
+                $this->j++;
             }else{
-                $this->jp +=1;
+                $this->p++;
             }
-        }else{
-            if($response->value > 4){
-                $this->jp += 1;
+        }
+        else if ($response['value'] < 4 ){
+            if($response['direction'] <0){
+                $this->p++;
             }else{
-                $this->jp -=1;
+                $this->j++;
             }
         }
     }
@@ -140,30 +160,34 @@ class GetPersonality {
     {
         $ret = "";
 
-        if($this->ei > 0 ){
+        $this->calculate();
+        if( $this->e < $this->i){
             $ret .= "I";
         }else{
             $ret .= "E";
         }
 
-        if($this->ei > 0 ){
+        if( $this->s < $this->n){
             $ret .= "N";
         }else{
             $ret .= "S";
         }
 
-        if($this->ei > 0 ){
+        if( $this->t < $this->f){
             $ret .= "F";
         }else{
             $ret .= "T";
         }
 
-        if($this->ei > 0 ){
+        if( $this->j < $this->p){
             $ret .= "P";
         }else{
             $ret .= "J";
         }
+
+
         return $ret;
+        return [$this->e,$this->i, $this->s, $this->n];
     }
 
     

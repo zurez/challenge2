@@ -32,7 +32,7 @@ class UserResponseController extends Controller
                     
                 }
                 
-                $gp = new GetPersonality($response);
+                $gp = new GetPersonality($r->input('responses'));
 
                 $personalityType = $gp->personality();
 
@@ -48,6 +48,7 @@ class UserResponseController extends Controller
             $ret['message'] = $e->getMessage();
             $ret['line'] = $e->getLine();
         }
+       
         return response()->json($ret);
     }
 
