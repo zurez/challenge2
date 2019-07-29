@@ -12,6 +12,12 @@ class GetPersonality {
     public  $sn  = 0;
     public  $tf  = 0;
     public  $jp  = 0;
+    //Counts
+    public  $eiC  = 0;
+    public  $snC  = 0;
+    public  $tfC  = 0;
+    public  $jpC  = 0;
+
 
     public function __construct($responses)
     {
@@ -55,15 +61,19 @@ class GetPersonality {
             switch($value['dimension']){
                 case 'EI':
                     $this->handle_ei($value);
+                    $this->eiC++;
                     break;
                 case 'SN':
                     $this->handle_sn($value);
+                    $this->snC++;
                     break;
                 case 'TF':
                     $this->handle_tf($value);
+                    $this->tfC++;
                     break;
                 case 'JP':
                     $this->handle_jp($value);
+                    $this->jpC++;
                     break;
                 default:
                     break;
@@ -113,22 +123,22 @@ class GetPersonality {
 
         $this->calculate();
         
-        if( $this->ei <= 4){
+        if( ($this->ei/$this->eiC) <= 4){
             $ret .= "E";
         }else{
             $ret .= "I";
         }
-        if( $this->sn <= 4){
+        if( ($this->sn/$this->snC) <= 4){
             $ret .= "S";
         }else{
             $ret .= "N";
         }
-        if( $this->tf <= 4){
+        if( ($this->tf/$this->tfC) <= 4){
             $ret .= "T";
         }else{
             $ret .= "F";
         }
-        if( $this->jp <= 4){
+        if( ($this->jp/$this->jpC) <= 4){
             $ret .= "J";
         }else{
             $ret .= "P";
